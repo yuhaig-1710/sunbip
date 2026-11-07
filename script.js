@@ -1,4 +1,4 @@
-// Dọn dẹp tự động nếu dữ liệu cũ trong localStorage bị lỗi
+// Dọn dẹp tự động dữ liệu cũ
 try {
   let testHist = localStorage.getItem('sunbip_history');
   if (testHist && testHist.includes('TAI')) {
@@ -40,7 +40,7 @@ const placedXiu = document.getElementById('placed-xiu');
 const btnConfirm = document.getElementById('btn-confirm');
 const ratioText = document.getElementById('ratio-text');
 
-// Sound Synthesizer
+// Audio Synthesizer
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSound(type) {
   if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -70,7 +70,7 @@ function playSound(type) {
   }
 }
 
-// Load dữ liệu
+// Load Data
 balanceEl.textContent = balance.toLocaleString();
 document.getElementById('session-num').textContent = currentSession;
 renderHistoryDots();
@@ -93,7 +93,7 @@ function startTimer() {
 
 startTimer();
 
-// Chips
+// Chip Rack Selection
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
     if (isBetConfirmed || gameState !== 'BETTING') return;
@@ -105,7 +105,7 @@ document.querySelectorAll('.chip').forEach(chip => {
   });
 });
 
-// Select Bet Side
+// Select Side
 zoneTai.addEventListener('click', () => placeBet('Tài'));
 zoneXiu.addEventListener('click', () => placeBet('Xỉu'));
 
@@ -150,7 +150,7 @@ function updateUI() {
   placedXiu.textContent = betSide === 'Xỉu' ? `${(isBetConfirmed ? confirmedBetAmount : tempBetAmount).toLocaleString()}$ ${isBetConfirmed ? '(Đã chốt)' : '(Chờ XN)'}` : '';
 }
 
-// Lock and Shake
+// Lock & Shake Bowl
 function triggerLockAndShake() {
   gameState = 'SHAKING';
   timerStateEl.textContent = 'ĐANG XÓC...';
@@ -365,7 +365,7 @@ function saveData() {
   localStorage.setItem('sunbip_history', JSON.stringify(historyData));
 }
 
-// Modal Nạp Tiền
+// Modal Deposit
 const modalDeposit = document.getElementById('modal-deposit');
 document.getElementById('btn-open-deposit').addEventListener('click', () => modalDeposit.classList.add('open'));
 document.getElementById('btn-close-deposit').addEventListener('click', () => modalDeposit.classList.remove('open'));
@@ -422,7 +422,7 @@ function renderHistoryTable() {
   }).join('');
 }
 
-// Biểu Đồ
+// Trend Chart
 function drawTrendChart() {
   const canvas = document.getElementById('trendChart');
   if (!canvas) return;
@@ -471,7 +471,7 @@ function drawTrendChart() {
   });
 }
 
-// Modal Lịch sử
+// Modal History
 const modal = document.getElementById('modal-hist');
 document.getElementById('btn-open-modal').addEventListener('click', () => modal.classList.add('open'));
 document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('open'));
