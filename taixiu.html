@@ -30,6 +30,12 @@
         <div class="timer-status" id="timer-state">ĐANG ĐẶT CƯỢC</div>
       </div>
 
+      <!-- THANH THỐNG KÊ SỐ LƯỢNG NGƯỜI CƯỢC -->
+      <div class="taixiu-stats-bar" style="display: flex; justify-content: space-between; width: 100%; max-width: 230px; padding: 4px 8px; background: rgba(0,0,0,0.5); margin: 2px 0; border-radius: 6px; font-size: 10px; font-weight: bold; border: 1px solid rgba(255,255,255,0.1);">
+        <div>🔴 TÀI: <span id="total-tai-money" style="color: #ef4444;">14.5M</span> (<span id="count-tai">142</span>)</div>
+        <div>🔵 XỈU: <span id="total-xiu-money" style="color: #3b82f6;">12.8M</span> (<span id="count-xiu">128</span>)</div>
+      </div>
+
       <div class="table-center">
         <div class="plate-base">
           <div class="dice-layer">
@@ -59,6 +65,18 @@
             </div></div>
           </div>
           <div class="bowl-cover" id="bowl"><div class="bowl-knob"></div></div>
+
+          <!-- KHUNG CHAT LIVE STREAM (ĐÃ XÓA TĨNH 2 CÂU CŨ, TỰ ĐỘNG RANDOM KHI LOAD) -->
+          <div class="live-chat-side-panel">
+            <div class="live-chat-header">
+              <span>💬 LIVE CHAT VIP</span>
+              <span style="width: 5px; height: 5px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 5px #22c55e;"></span>
+            </div>
+            <div class="live-chat-messages" id="liveChatStream">
+              <!-- Tin nhắn khởi tạo sẽ được script random tự động -->
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -136,5 +154,14 @@
     </div>
   </div>
   <script src="script.js"></script>
+  <script>
+    // Khởi tạo ngay 2 câu chat ngẫu nhiên khi vừa vào trang thay vì bị fix cứng
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof pushSingleBotChat === 'function') {
+        pushSingleBotChat();
+        pushSingleBotChat();
+      }
+    });
+  </script>
 </body>
 </html>

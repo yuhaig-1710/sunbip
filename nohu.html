@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sunbịp - Nổ Hũ 7x5 Tiền Việt VIP</title>
+  <title>Sunbịp - Nổ Hũ 7x5 VIP (Lên Voi Xuống Chó)</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
@@ -49,7 +49,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.25s ease, opacity 0.25s ease;
+      transition: transform 0.35s ease, opacity 0.35s ease;
     }
     .slot-cell.exploding {
       transform: scale(0);
@@ -70,6 +70,7 @@
       border-radius: 15px;
       display: inline-block;
       margin-bottom: 4px;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
     }
     .free-spins-counter {
       background: linear-gradient(135deg, #ec4899, #8b5cf6);
@@ -84,7 +85,7 @@
     .win-popup-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.88);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -96,15 +97,15 @@
     .win-popup-content {
       background: linear-gradient(135deg, #b45309, #f59e0b);
       border: 3px solid #fef08a;
-      padding: 16px 24px;
+      padding: 18px 24px;
       border-radius: 20px;
       text-align: center;
       max-width: 85%;
     }
     .win-popup-title { font-size: 18px; font-weight: 900; color: #fff; }
     .win-popup-amount { font-size: 26px; font-weight: 900; color: #fef08a; text-shadow: 0 0 10px #000; margin: 6px 0; }
-    .win-popup-sub { font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 6px; }
-    .win-popup-timer { font-size: 11px; color: #fef08a; font-weight: bold; }
+    .win-popup-sub { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 8px; }
+    .win-popup-timer { font-size: 11px; color: #fef08a; font-weight: bold; margin-top: 6px; }
     
     @keyframes fadeInPopup {
       from { transform: scale(0.6); opacity: 0; }
@@ -118,8 +119,8 @@
     .auto-panel { display: flex; gap: 4px; justify-content: center; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; margin-top: 6px; }
     .btn-auto-item { background: #1e293b; border: 1px solid #475569; color: #fff; padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; cursor: pointer; }
     .btn-auto-item.active { background: #ec4899; }
-    .btn-spin-7x5 { background: linear-gradient(135deg, #f59e0b, #d97706); border: 2px solid #fef08a; color: #fff; font-size: 15px; font-weight: 900; padding: 8px 0; border-radius: 20px; cursor: pointer; margin-top: 6px; width: 100%; }
-    .btn-spin-7x5:disabled { background: #64748b; cursor: not-allowed; }
+    .btn-spin-7x5 { background: linear-gradient(135deg, #f59e0b, #d97706); border: 2px solid #fef08a; color: #fff; font-size: 15px; font-weight: 900; padding: 10px 0; border-radius: 20px; cursor: pointer; margin-top: 6px; width: 100%; transition: all 0.2s; }
+    .btn-spin-7x5:disabled { background: #64748b; border-color: #94a3b8; cursor: not-allowed; opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -144,7 +145,7 @@
             <div class="win-popup-title" id="popup-title">🎉 THẮNG LỚN! 🎉</div>
             <div class="win-popup-amount" id="popup-amount">+0đ</div>
             <div class="win-popup-sub" id="popup-sub" style="display:none;"></div>
-            <button class="btn-confirm" onclick="closeWinPopup()" style="padding: 6px 18px; font-size: 12px;">NHẬN THƯỞNG</button>
+            <button class="btn-confirm" onclick="closeWinPopup()" style="padding: 8px 22px; font-size: 13px; background: #22c55e; color: #fff; border: 2px solid #fff; border-radius: 10px; font-weight: 900; cursor: pointer;">NHẬN THƯỞNG</button>
             <div class="win-popup-timer" id="popup-timer">3s...</div>
           </div>
         </div>
@@ -156,14 +157,13 @@
         </div>
 
         <div id="multiplier-box" style="display: none;">
-          <div class="multiplier-badge">COMBO: <span id="multi-val">x2</span></div>
+          <div class="multiplier-badge">HỆ SỐ NHÂN LƯỢT ĂN: <span id="multi-val">x1</span></div>
         </div>
 
         <div class="grid-7x5" id="grid-board"></div>
 
-        <div class="result-banner" id="nohu-banner" style="margin-top: 6px; min-height: 20px;">SẴN SÀNG QUAY</div>
+        <div class="result-banner" id="nohu-banner" style="margin-top: 6px; min-height: 20px;">+0đ</div>
 
-        <!-- Mức cược chuẩn (Có 0.4K) -->
         <div class="bet-selector-row">
           <button class="btn-bet-opt active" onclick="setBet(400, this)">0.4K</button>
           <button class="btn-bet-opt" onclick="setBet(1000, this)">1K</button>
@@ -197,32 +197,33 @@
     let balance = localStorage.getItem('sunbip_balance') !== null ? parseFloat(localStorage.getItem('sunbip_balance')) : 100000;
     let jackpot = localStorage.getItem('sunbip_jackpot') !== null ? parseFloat(localStorage.getItem('sunbip_jackpot')) : 10000000;
     
-    let currentBet = 400; // Mặc định 0.4K (400đ)
+    let currentBet = 400;
     let freeSpinsRemaining = 0;
     let autoRemaining = 0;
     let isSpinning = false;
-    let currentMultiplier = 1;
+    
+    // Hệ số mặc định quay thường là x1
+    let currentSpinMultiplier = 1; 
     let cascadeSteps = 0;
-    let sessionTotalWin = 0; 
-    let waitingForScatterConfirm = false;
-    let scatterCountdownTimer = null;
-    let scatterSecondsLeft = 5;
+    
+    let sessionTotalWin = 0;
+    let freeSpinAccumulatedWin = 0;
+    let isScatterSessionActive = false; 
 
+    let waitingForScatterConfirm = false;
     let popupAutoCloseTimer = null;
     let popupTimerTick = null;
 
     let gridData = Array(7).fill(null).map(() => Array(5).fill('💎'));
-    
-    const symbols = ['🍋', '🍉', '🔔', '7️⃣', '👑', '💎', '♾️']; 
-    const symbolSpawnPooL = ['🍋', '🍋', '🍋', '🍉', '🍉', '🍉', '🔔', '🔔', '7️⃣', '👑', '💎'];
+    const symbolSpawnPooL = ['🍋', '🍋', '🍋', '🍉', '🍉', '🔔', '🔔', '7️⃣', '👑', '💎'];
     
     const symbolWeights = { 
-      '🍋': 0.05, 
-      '🍉': 0.1,  
-      '🔔': 0.25, 
-      '7️⃣': 0.5,  
-      '👑': 1.2,  
-      '💎': 2.5   
+      '🍋': 0.04,  
+      '🍉': 0.08,  
+      '🔔': 0.20,  
+      '7️⃣': 0.5,   
+      '👑': 2.0,  
+      '💎': 6.0   
     };
 
     const balanceEl = document.getElementById('balance');
@@ -232,10 +233,11 @@
     const gridBoard = document.getElementById('grid-board');
     const buyPriceEl = document.getElementById('buy-price');
 
-    balanceEl.textContent = Math.round(balance).toLocaleString();
-    jackpotEl.textContent = Math.round(jackpot).toLocaleString();
+    if (balanceEl) balanceEl.textContent = Math.round(balance).toLocaleString();
+    if (jackpotEl) jackpotEl.textContent = Math.round(jackpot).toLocaleString();
 
     function initBoard() {
+      if (!gridBoard) return;
       gridBoard.innerHTML = '';
       for (let r = 0; r < 7; r++) {
         for (let c = 0; c < 5; c++) {
@@ -251,6 +253,7 @@
     function getRandomSymbol() {
       return symbolSpawnPooL[Math.floor(Math.random() * symbolSpawnPooL.length)];
     }
+
     initBoard();
 
     function setBet(val, btn) {
@@ -258,10 +261,8 @@
       currentBet = val;
       document.querySelectorAll('.btn-bet-opt').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      
-      // Tính chuẩn xác giá mua Scatter theo từng mức cược (75x)
       let buyCost = Math.round(currentBet * 75);
-      buyPriceEl.textContent = buyCost.toLocaleString();
+      if (buyPriceEl) buyPriceEl.textContent = buyCost.toLocaleString();
     }
 
     function setAutoMode(mode, btn) {
@@ -273,29 +274,36 @@
 
     function handleSpinClick() {
       if (waitingForScatterConfirm) {
-        clearInterval(popupTimerTick);
-        clearInterval(scatterCountdownTimer);
         closeWinPopup();
-        proceedFreeSpinsSequence();
         return;
       }
-      if (autoRemaining !== 0 && isSpinning) { stopAutoSpin(); return; }
+      if (autoRemaining !== 0 && isSpinning) { 
+        stopAutoSpin(); 
+        return; 
+      }
       spinSlot(false);
     }
 
     function stopAutoSpin() {
       autoRemaining = 0;
-      btnSpin.textContent = '🎰 QUAY NGAY';
+      if (btnSpin) {
+        btnSpin.disabled = false;
+        btnSpin.textContent = '🎰 QUAY NGAY';
+      }
       document.querySelectorAll('.btn-auto-item').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.btn-auto-item')[0].classList.add('active');
+      if (document.querySelectorAll('.btn-auto-item')[0]) {
+        document.querySelectorAll('.btn-auto-item')[0].classList.add('active');
+      }
     }
 
     function buyScatterFeature() {
       if (isSpinning || waitingForScatterConfirm) return;
       let buyCost = Math.round(currentBet * 75);
       if (balance < buyCost) {
-        banner.textContent = `❌ Không đủ tiền (${buyCost.toLocaleString()}đ)!`;
-        banner.style.color = '#f87171';
+        if (banner) {
+          banner.textContent = `❌ Không đủ tiền (${buyCost.toLocaleString()}đ)!`;
+          banner.style.color = '#f87171';
+        }
         return;
       }
       balance -= buyCost;
@@ -307,22 +315,38 @@
     function spinSlot(isBuyFeature = false) {
       if (isSpinning) return;
       if (!isBuyFeature && freeSpinsRemaining <= 0 && balance < currentBet) {
-        banner.textContent = "❌ Số dư không đủ!";
-        banner.style.color = "#f87171";
+        if (banner) {
+          banner.textContent = "❌ Số dư không đủ!";
+          banner.style.color = "#f87171";
+        }
         stopAutoSpin();
         return;
       }
 
       isSpinning = true;
-      btnSpin.disabled = true;
-      currentMultiplier = 1;
-      cascadeSteps = 0;
+      sessionTotalWin = 0; 
       
-      if (freeSpinsRemaining <= 0) {
-        sessionTotalWin = 0;
+      if (freeSpinsRemaining <= 0 && !isScatterSessionActive) {
+        freeSpinAccumulatedWin = 0;
       }
 
-      document.getElementById('multiplier-box').style.display = 'none';
+      if (btnSpin) {
+        btnSpin.disabled = true;
+        btnSpin.textContent = "🌀 ĐANG QUAY";
+      }
+      cascadeSteps = 0;
+      
+      // LOGIC MỚI: Cứ mỗi vòng quay mới (new spin) trong chuỗi Free Spin, hệ số khởi điểm reset về x8[cite: 4]
+      if (freeSpinsRemaining > 0 || isScatterSessionActive) {
+        currentSpinMultiplier = 8; 
+      } else {
+        currentSpinMultiplier = 1;
+      }
+
+      const multiBox = document.getElementById('multiplier-box');
+      const multiVal = document.getElementById('multi-val');
+      if (multiBox) multiBox.style.display = 'block';
+      if (multiVal) multiVal.textContent = `x${currentSpinMultiplier}`;
 
       if (freeSpinsRemaining > 0) {
         freeSpinsRemaining--;
@@ -334,29 +358,33 @@
         updateUI();
       }
 
-      banner.style.color = '#fff';
-      banner.textContent = freeSpinsRemaining > 0 ? `🎁 FREE SPINS: Còn ${freeSpinsRemaining} vòng` : "🌀 Đang quay...";
+      if (banner) {
+        banner.style.color = '#fbbf24';
+        let currentDisplay = (freeSpinsRemaining > 0 || isScatterSessionActive) ? freeSpinAccumulatedWin : 0;
+        banner.textContent = `+${Math.round(currentDisplay).toLocaleString()}đ`;
+      }
       
       let count = 0;
       let spinInterval = setInterval(() => {
         for (let r = 0; r < 7; r++) {
           for (let c = 0; c < 5; c++) {
-            document.getElementById(`cell-${r}-${c}`).textContent = getRandomSymbol();
+            let cell = document.getElementById(`cell-${r}-${c}`);
+            if (cell) cell.textContent = getRandomSymbol();
           }
         }
         count++;
-        if (count > 10) {
+        if (count > 11) {
           clearInterval(spinInterval);
           generateBoardResult(isBuyFeature);
         }
-      }, 40);
+      }, 100);
     }
 
     function generateBoardResult(isBuyFeature) {
       gridData = Array(7).fill(null).map(() => Array(5).fill(null));
 
       if (isBuyFeature) {
-        let scatterAmount = Math.random() > 0.95 ? 5 : (Math.random() > 0.75 ? 4 : 3);
+        let scatterAmount = Math.random() > 0.9 ? 5 : (Math.random() > 0.6 ? 4 : 3);
         let placed = 0;
         while (placed < scatterAmount) {
           let r = Math.floor(Math.random() * 7);
@@ -365,8 +393,8 @@
         }
       } else {
         let chance = Math.random();
-        if (chance < 0.003) {
-          let scatterAmount = chance < 0.0003 ? 5 : (chance < 0.001 ? 4 : 3);
+        if (chance < 0.025) {
+          let scatterAmount = chance < 0.003 ? 5 : (chance < 0.01 ? 4 : 3);
           let placed = 0;
           while (placed < scatterAmount) {
             let r = Math.floor(Math.random() * 7);
@@ -391,9 +419,11 @@
       for (let r = 0; r < 7; r++) {
         for (let c = 0; c < 5; c++) {
           let el = document.getElementById(`cell-${r}-${c}`);
-          el.textContent = gridData[r][c] || '';
-          if (gridData[r][c] === '♾️') el.classList.add('scatter-cell');
-          else el.classList.remove('scatter-cell', 'exploding');
+          if (el) {
+            el.textContent = gridData[r][c] || '';
+            if (gridData[r][c] === '♾️') el.classList.add('scatter-cell');
+            else el.classList.remove('scatter-cell', 'exploding');
+          }
         }
       }
     }
@@ -440,97 +470,64 @@
       }
 
       if (scatterCount >= 3) {
-        let addedSpins = scatterCount === 3 ? 10 : (scatterCount === 4 ? 12 : 14);
+        let addedSpins = 10 + (scatterCount - 3) * 2;
         freeSpinsRemaining += addedSpins;
+        isScatterSessionActive = true;
+        currentSpinMultiplier = 8; // Bắt đầu chuỗi free spins với hệ số x8[cite: 4]
+        
         updateFreeSpinsUI();
+        const multiBox = document.getElementById('multiplier-box');
+        const multiVal = document.getElementById('multi-val');
+        if (multiBox) multiBox.style.display = 'block';
+        if (multiVal) multiVal.textContent = `x${currentSpinMultiplier}`;
+
         if (typeof confetti === 'function') confetti({ particleCount: 250, spread: 120 });
 
-        showScatterWinPopup(scatterCount, addedSpins, sessionTotalWin);
+        showScatterWinPopup(scatterCount, addedSpins, freeSpinAccumulatedWin);
         return;
       }
 
       if (matchedClusters.length > 0) {
-        document.getElementById('multiplier-box').style.display = 'block';
-        document.getElementById('multi-val').textContent = `x${currentMultiplier}`;
+        const multiBox = document.getElementById('multiplier-box');
+        const multiVal = document.getElementById('multi-val');
+        if (multiBox) multiBox.style.display = 'block';
+        if (multiVal) multiVal.textContent = `x${currentSpinMultiplier}`;
 
         let stepWin = 0;
         matchedClusters.forEach(clusterObj => {
-          let weight = symbolWeights[clusterObj.sym] || 0.05;
-          let clusterValue = clusterObj.cells.length * currentBet * weight * currentMultiplier;
+          let weight = symbolWeights[clusterObj.sym] || 0.04;
+          let clusterValue = clusterObj.cells.length * currentBet * weight * currentSpinMultiplier;
           stepWin += clusterValue;
 
           clusterObj.cells.forEach(([r, c]) => {
-            document.getElementById(`cell-${r}-${c}`).classList.add('exploding');
+            let cell = document.getElementById(`cell-${r}-${c}`);
+            if (cell) cell.classList.add('exploding');
             gridData[r][c] = null;
           });
         });
 
         sessionTotalWin += stepWin;
+        freeSpinAccumulatedWin += stepWin;
         balance += stepWin;
-        banner.style.color = '#fbbf24';
-        banner.textContent = `💥 NỔ CỤM! +${Math.round(stepWin).toLocaleString()}đ`;
+
+        if (banner) {
+          banner.style.color = '#fbbf24';
+          let activeWinDisplay = (freeSpinsRemaining > 0 || isScatterSessionActive) ? freeSpinAccumulatedWin : sessionTotalWin;
+          banner.textContent = `+${Math.round(activeWinDisplay).toLocaleString()}đ`;
+        }
         saveData();
         updateUI();
 
-        if (currentMultiplier < 128) currentMultiplier *= 2;
+        // Trong cùng vòng quay, tiếp tục nhân đôi hệ số khi nổ cụm tiếp theo (tối đa 1024)[cite: 4]
+        if (currentSpinMultiplier < 1024) {
+          currentSpinMultiplier *= 2;
+          if (multiVal) multiVal.textContent = `x${currentSpinMultiplier}`;
+        }
 
         setTimeout(() => { applySlideDownAndFillAll(); }, 400);
       } else {
         endSpinSession();
       }
-    }
-
-    function showScatterWinPopup(count, spins, currentTotalWin) {
-      document.querySelector('.win-popup-title').textContent = '⚡ TRÚNG FREE SPINS! ⚡';
-      document.getElementById('popup-amount').textContent = `+${spins} VÒNG QUAY`;
-      
-      const subEl = document.getElementById('popup-sub');
-      subEl.style.display = 'block';
-      subEl.textContent = `TỔNG CỘNG ĂN ĐƯỢC: +${Math.round(currentTotalWin).toLocaleString()}đ`;
-
-      document.getElementById('win-popup').style.display = 'flex';
-
-      scatterSecondsLeft = 5;
-      document.getElementById('popup-timer').textContent = `Tự động vào sau ${scatterSecondsLeft}s...`;
-
-      waitingForScatterConfirm = true;
-      btnSpin.disabled = false;
-      btnSpin.textContent = `✔ XÁC NHẬN (${scatterSecondsLeft}s)`;
-
-      let countdownTick = 0;
-      clearInterval(popupTimerTick);
-      popupTimerTick = setInterval(() => {
-        countdownTick++;
-        scatterSecondsLeft = 5 - countdownTick;
-        if (scatterSecondsLeft > 0) {
-          document.getElementById('popup-timer').textContent = `Tự động vào sau ${scatterSecondsLeft}s...`;
-          btnSpin.textContent = `✔ XÁC NHẬN (${scatterSecondsLeft}s)`;
-        } else {
-          clearInterval(popupTimerTick);
-          if (waitingForScatterConfirm) {
-            closeWinPopup();
-            proceedFreeSpinsSequence();
-          }
-        }
-      }, 1000);
-    }
-
-    function proceedFreeSpinsSequence() {
-      waitingForScatterConfirm = false;
-      clearInterval(popupTimerTick);
-
-      for (let r = 0; r < 7; r++) {
-        for (let c = 0; c < 5; c++) {
-          if (gridData[r][c] === '♾️') {
-            document.getElementById(`cell-${r}-${c}`).classList.add('exploding');
-            gridData[r][c] = null;
-          }
-        }
-      }
-
-      setTimeout(() => {
-        applySlideDownAndFillAll();
-      }, 300);
     }
 
     function applySlideDownAndFillAll() {
@@ -561,13 +558,22 @@
         return;
       }
 
-      if (sessionTotalWin >= 10000) {
-        showMoneyWinPopup(sessionTotalWin);
-      } else if (sessionTotalWin === 0) {
-        banner.style.color = '#cbd5e1';
-        banner.textContent = "CHÚC MAY MẮN LẦN SAU!";
+      if (isScatterSessionActive) {
+        isScatterSessionActive = false;
+        showScatterFinalWinPopup(freeSpinAccumulatedWin);
+        return;
       }
 
+      let finalDisplay = (freeSpinAccumulatedWin > 0) ? freeSpinAccumulatedWin : sessionTotalWin;
+      if (banner) {
+        banner.style.color = finalDisplay > 0 ? '#4ade80' : '#cbd5e1';
+        banner.textContent = `+${Math.round(finalDisplay).toLocaleString()}đ`;
+      }
+
+      finishSpinState();
+    }
+
+    function finishSpinState() {
       if (autoRemaining !== 0) {
         if (typeof autoRemaining === 'number') {
           autoRemaining--;
@@ -575,73 +581,142 @@
         }
         setTimeout(() => {
           let popupEl = document.getElementById('win-popup');
-          if (!popupEl.style.display || popupEl.style.display === 'none') {
+          if (!popupEl || popupEl.style.display === 'none') {
             spinSlot(false);
           }
-        }, 1000);
+        }, 800);
       } else {
-        btnSpin.disabled = false;
-        btnSpin.textContent = '🎰 QUAY NGAY';
+        if (btnSpin) {
+          btnSpin.disabled = false;
+          btnSpin.textContent = '🎰 QUAY NGAY';
+        }
       }
     }
 
-    function showMoneyWinPopup(amount) {
-      document.querySelector('.win-popup-title').textContent = '🎉 CHÚC MỪNG CHIẾN THẮNG! 🎉';
-      document.getElementById('popup-amount').textContent = `+${Math.round(amount).toLocaleString()}đ`;
-      document.getElementById('popup-sub').style.display = 'none';
-      document.getElementById('win-popup').style.display = 'flex';
+    function showScatterWinPopup(count, spins, currentTotalWin) {
+      const titleEl = document.querySelector('.win-popup-title');
+      const amountEl = document.getElementById('popup-amount');
+      const subEl = document.getElementById('popup-sub');
+      const popupEl = document.getElementById('win-popup');
+      const timerEl = document.getElementById('popup-timer');
+
+      if (titleEl) titleEl.textContent = '⚡ TRÚNG FREE SPINS! ⚡';
+      if (amountEl) amountEl.textContent = `+${spins} VÒNG QUAY`;
       
-      if (typeof confetti === 'function') {
-        confetti({ particleCount: 200, spread: 100 });
+      if (subEl) {
+        subEl.style.display = 'block';
+        subEl.textContent = `VÀO VÒNG FREE SPIN (Hệ số bắt đầu x8 mỗi lượt)`;
       }
 
-      let secLeft = 3;
-      document.getElementById('popup-timer').textContent = `Tự nhận sau ${secLeft}s...`;
+      if (popupEl) popupEl.style.display = 'flex';
+
+      let secLeft = 5;
+      if (timerEl) timerEl.textContent = `Tự động vào sau ${secLeft}s...`;
+
+      waitingForScatterConfirm = true;
+      if (btnSpin) {
+        btnSpin.disabled = false;
+        btnSpin.textContent = `✔ XÁC NHẬN (${secLeft}s)`;
+      }
+
+      clearInterval(popupTimerTick);
+      popupTimerTick = setInterval(() => {
+        secLeft--;
+        if (secLeft > 0) {
+          if (timerEl) timerEl.textContent = `Tự động vào sau ${secLeft}s...`;
+          if (waitingForScatterConfirm && btnSpin) btnSpin.textContent = `✔ XÁC NHẬN (${secLeft}s)`;
+        } else {
+          clearInterval(popupTimerTick);
+          if (waitingForScatterConfirm) {
+            closeWinPopup();
+          }
+        }
+      }, 1000);
+    }
+
+    function proceedFreeSpinsSequence() {
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 5; c++) {
+          if (gridData[r][c] === '♾️') {
+            let cell = document.getElementById(`cell-${r}-${c}`);
+            if (cell) cell.classList.add('exploding');
+            gridData[r][c] = null;
+          }
+        }
+      }
+      setTimeout(() => { applySlideDownAndFillAll(); }, 350);
+    }
+
+    function showScatterFinalWinPopup(totalAmount) {
+      const titleEl = document.querySelector('.win-popup-title');
+      const amountEl = document.getElementById('popup-amount');
+      const subEl = document.getElementById('popup-sub');
+      const popupEl = document.getElementById('win-popup');
+      const timerEl = document.getElementById('popup-timer');
+
+      if (titleEl) titleEl.textContent = '🎁 KẾT THÚC CHUỖI FREE SPINS! 🎁';
+      if (amountEl) amountEl.textContent = `+${Math.round(totalAmount).toLocaleString()}đ`;
+      
+      if (subEl) {
+        subEl.style.display = 'block';
+        subEl.textContent = `TỔNG TIỀN THẮNG FREE SPIN`;
+      }
+
+      if (popupEl) popupEl.style.display = 'flex';
+      if (typeof confetti === 'function') confetti({ particleCount: 300, spread: 130 });
+
+      let secLeft = 4;
+      if (timerEl) timerEl.textContent = `Tự nhận sau ${secLeft}s...`;
       
       clearInterval(popupTimerTick);
       popupTimerTick = setInterval(() => {
         secLeft--;
         if (secLeft > 0) {
-          document.getElementById('popup-timer').textContent = `Tự nhận sau ${secLeft}s...`;
+          if (timerEl) timerEl.textContent = `Tự nhận sau ${secLeft}s...`;
         } else {
           clearInterval(popupTimerTick);
         }
       }, 1000);
 
       clearTimeout(popupAutoCloseTimer);
-      popupAutoCloseTimer = setTimeout(() => {
-        closeWinPopup();
-      }, 3000);
+      popupAutoCloseTimer = setTimeout(() => { closeWinPopup(); }, 4000);
     }
 
     function closeWinPopup() {
       clearTimeout(popupAutoCloseTimer);
       clearInterval(popupTimerTick);
-      document.getElementById('win-popup').style.display = 'none';
+      const popupEl = document.getElementById('win-popup');
+      if (popupEl) popupEl.style.display = 'none';
+
       if (waitingForScatterConfirm) {
+        waitingForScatterConfirm = false;
+        if (btnSpin) {
+          btnSpin.disabled = true;
+          btnSpin.textContent = '🌀 ĐANG QUAY';
+        }
         proceedFreeSpinsSequence();
         return;
       }
-      if (autoRemaining !== 0 && !isSpinning) {
-        spinSlot(false);
-      }
+
+      finishSpinState();
     }
 
     function updateFreeSpinsUI() {
       const fsBox = document.getElementById('free-spins-box');
       const fsCount = document.getElementById('fs-count');
       if (freeSpinsRemaining > 0) {
-        fsBox.style.display = 'block';
-        fsCount.textContent = freeSpinsRemaining;
+        if (fsBox) fsBox.style.display = 'block';
+        if (fsCount) fsCount.textContent = freeSpinsRemaining;
       } else {
-        fsBox.style.display = 'none';
+        if (fsBox) fsBox.style.display = 'none';
       }
     }
 
     function updateUI() {
-      balanceEl.textContent = Math.round(balance).toLocaleString();
-      jackpotEl.textContent = Math.round(jackpot).toLocaleString();
+      if (balanceEl) balanceEl.textContent = Math.round(balance).toLocaleString();
+      if (jackpotEl) jackpotEl.textContent = Math.round(jackpot).toLocaleString();
     }
+
     function saveData() {
       localStorage.setItem('sunbip_balance', balance);
       localStorage.setItem('sunbip_jackpot', jackpot);
